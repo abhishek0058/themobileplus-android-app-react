@@ -1,0 +1,1 @@
+export default BaseURL = `http://themobileplus.co.in`;
