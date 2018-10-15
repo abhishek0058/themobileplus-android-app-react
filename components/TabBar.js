@@ -3,6 +3,8 @@ import { View, Text } from "react-native";
 import { Tab, Tabs, TabHeading, Icon, Button } from "native-base";
 import Home from "./Home";
 import UpdateStock from "./UpdateStock";
+import Sold from "./sold/Sold";
+import Returns from "./return/Return";
 
 class TabBar extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -52,7 +54,7 @@ class TabBar extends Component {
                 }}
               >
                 <Text style={{ fontWeight: "bold", color: "white" }}>
-                  Search Stock
+                  Search
                 </Text>
               </TabHeading>
             }
@@ -75,6 +77,36 @@ class TabBar extends Component {
             }
           >
             <UpdateStock store={this.props.navigation.state.params.store} />
+          </Tab>
+          <Tab
+            heading={
+              <TabHeading
+                style={{
+                  backgroundColor: "red",
+                  borderWidth: 0.5,
+                  borderColor: "white"
+                }}
+              >
+                <Text style={{ fontWeight: "bold", color: "white" }}>Sell</Text>
+              </TabHeading>
+            }
+          >
+            <Sold store={this.props.navigation.state.params.store} />
+          </Tab>
+          <Tab
+            heading={
+              <TabHeading
+                style={{
+                  backgroundColor: "red",
+                  borderWidth: 0.5,
+                  borderColor: "white"
+                }}
+              >
+                <Text style={{ fontWeight: "bold", color: "white" }}>Return</Text>
+              </TabHeading>
+            }
+          >
+            <Returns store={this.props.navigation.state.params.store} />
           </Tab>
         </Tabs>
       </View>

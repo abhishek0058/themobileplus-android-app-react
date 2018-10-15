@@ -9,14 +9,10 @@ import {
   Item,
   Label,
   Input,
-  Button,
-  List,
-  ListItem,
-  Left,
-  Right,
-  Icon
+  Button
 } from "native-base";
 import PickerHelper from "./PickerHelper";
+import BarCode from "./barcode/BarCode";
 
 class UpdateStock extends Component {
   constructor(props) {
@@ -26,40 +22,45 @@ class UpdateStock extends Component {
       receiverid: "0",
       imeino: "",
       ready: false,
-      stores: []
+      stores: [],
+      person: ""
     };
   }
 
   async componentDidMount() {
     try {
       const { id } = this.props.store;
-      const data = await getData(`user/storeAllButMe/${id}`);
-      console.log(data);
+      const data = await getData(`user/storeAllButMeBarCode/${id}`);
       this.setState({
-        stores: data[0],
-        imeinumbers: data[1],
+        stores: data,
         senderid: id,
         ready: true
       });
+      
     } catch (e) {
       console.log(e);
     }
   }
 
   update = async () => {
-    this.setState({ successMsg: "", loading: true, msg: "" });
+    this.setState({ successMsg: "", msg: "" });
     if (this.state.receiverid == "0") {
       this.setState({ msg: "Please Select a Store" });
       return;
     } else if (this.state.imeino == "") {
       this.setState({ msg: "Please Enter an IMEI Number" });
       return;
+    } else if (this.state.person == "") {
+      this.setState({ msg: "Please Enter the Person" });
+      return;
     } else {
+      this.setState({ loading: true });
       try {
         const body = {
           senderid: this.state.senderid,
           receiverid: this.state.receiverid,
-          imeino: this.state.imeino
+          imeino: this.state.imeino,
+          person: this.state.person
         };
         const result = await postData("user/update", body);
         if (result) {
@@ -83,7 +84,6 @@ class UpdateStock extends Component {
 
   valueChange = obj => {
     this.setState(obj);
-    console.log(obj);
   };
 
   loading = () => {
@@ -92,38 +92,9 @@ class UpdateStock extends Component {
     }
   };
 
-  makeList = () => {
-    return this.state.imeinumbers.map((item, index) => {
-      return (
-        <ListItem
-          key={index}
-          onPress={() => this.setState({ imeino: item.imeino })}
-        >
-          <Left>
-            <Text>{item.imeino}</Text>
-          </Left>
-          <Right>
-            <Icon name="arrow-forward" />
-          </Right>
-        </ListItem>
-      );
-    });
-  };
-
-  refresh = async () => {
-    try {
-      const { id } = this.props.store;
-      const data = await getData(`user/storeAllButMe/${id}`);
-      console.log(data);
-      this.setState({
-        stores: data[0],
-        imeinumbers: data[1],
-        senderid: id,
-        ready: true
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  fillIMEINO = imeino => {
+    if(this.state.imeino != imeino)
+      this.setState({ imeino });
   };
 
   render() {
@@ -156,24 +127,23 @@ class UpdateStock extends Component {
               valueChange={this.valueChange}
             />
             <Form>
-              <Item floatingLabel>
+              <Item>
                 <Label style={{ fontWeight: "bold" }}>IMEI Number</Label>
                 <Input
                   onChangeText={imeino => this.setState({ imeino })}
                   value={this.state.imeino}
                 />
               </Item>
+              <Item>
+                <Label style={{ fontWeight: "bold" }}>Person</Label>
+                <Input
+                  onChangeText={person => this.setState({ person })}
+                  value={this.state.person}
+                />
+              </Item>
             </Form>
 
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                paddingHorizontal: 30,
-                justifyContent: "space-evenly",
-                margin: 5
-              }}
-            >
+            <View>
               <Button
                 danger
                 style={{
@@ -194,26 +164,6 @@ class UpdateStock extends Component {
                   Update
                 </Text>
               </Button>
-
-              <Button
-                info
-                style={{
-                  width: 100,
-                  alignSelf: "center",
-                  marginTop: 5
-                }}
-                onPress={() => this.refresh()}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    color: "white",
-                    padding: 20
-                  }}
-                >
-                  Refresh
-                </Text>
-              </Button>
             </View>
 
             <Text
@@ -229,12 +179,15 @@ class UpdateStock extends Component {
             <Text style={{ alignSelf: "center", fontSize: 17, color: "red" }}>
               {this.state.msg}
             </Text>
-            <List>
-              <ListItem itemDivider>
-                <Text>IMEI Numbers</Text>
-              </ListItem>
-              {this.makeList()}
-            </List>
+            <View style={{ width: 300, height: 300, alignSelf: "center" }}>
+              <BarCode fillIMEINO={this.fillIMEINO} />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <Text style={{ padding: 10 }}>
+                Keep the camera on the Bar code or QR Code. It will
+                automatically take it.
+              </Text>
+            </View>
           </Content>
         </Container>
       );

@@ -72,7 +72,6 @@ class Login extends Component {
       if (result.length) {
         await AsyncStorage.setItem("store", JSON.stringify(result[0]));
         this.setState({ loading: false });
-        console.log("user here", result);
         this.props.navigation.replace("TabBar", { store: result[0] });
       } else {
         this.setState({ loading: false, message: "Invalid Credentials" });
@@ -118,7 +117,7 @@ class Login extends Component {
       return (
         <View style={{ flex: 1, backgroundColor: 'white'}}>
           <Image
-            source={require("../assets/logo.jpg")}
+            source={require("../assets/logo.png")}
             style={{
               height: 100,
               width: 100,
@@ -127,11 +126,11 @@ class Login extends Component {
             }}
           />
           <Form style={{ marginTop: 25 }}>
-            <Item floatingLabel>
+            <Item>
               <Label style={{ fontSize: 20 }}>Username</Label>
               <Input onChangeText={username => this.setState({ username })} />
             </Item>
-            <Item floatingLabel>
+            <Item>
               <Label style={{ fontSize: 20 }}>Password</Label>
               <Input onChangeText={password => this.setState({ password })} />
             </Item>

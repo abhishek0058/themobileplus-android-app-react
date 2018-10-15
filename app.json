@@ -1,16 +1,19 @@
 {
   "expo": {
-    "name": "app",
-    "description": "This project is really great.",
-    "slug": "app",
+    "name": "themobileplus",
+    "description": "This is an inventory project for a store chain in Gwalior.",
+    "slug": "themobileplus",
     "privacy": "public",
     "sdkVersion": "30.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.jpg",
+    "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/logo.jpg",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.themobileplus.inventory"
+    },
+    "android": {
+      "package": "com.themobileplus.inventory"
+    },
+    "githubUrl": "https://github.com/abhishek0058/themobileplus-app.git"
   }
 }
