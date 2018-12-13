@@ -1,20 +1,7 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { getData } from "../FetchService";
-import {
-  List,
-  ListItem,
-  Left,
-  Right,
-  Icon,
-  Spinner,
-  Container,
-  Content,
-  Card,
-  CardItem,
-  Item,
-  Body
-} from "native-base";
+import { Spinner, Container, Content, Button, Icon } from "native-base";
 
 class Stock extends Component {
   static navigationOptions = {
@@ -47,7 +34,6 @@ class Stock extends Component {
     const { storename } = this.props.navigation.state.params;
 
     if (this.state.ready) {
-      console.log(this.state.data);
       return (
         <Container>
           <Content>
@@ -103,6 +89,20 @@ class Stock extends Component {
               >
                 {this.state.store.email}
               </Text>
+              <Button
+                iconLeft
+                light
+                onPress={() => this.props.navigation.pop()}
+                style={{
+                  width: 100,
+                  margin: 30,
+                  padding: 10,
+                  alignSelf: "center"
+                }}
+              >
+                <Icon name="arrow-back" />
+                <Text style={{ padding: 10 }}>Back</Text>
+              </Button>
             </View>
           </Content>
         </Container>

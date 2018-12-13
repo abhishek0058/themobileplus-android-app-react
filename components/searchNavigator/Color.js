@@ -64,6 +64,14 @@ class Color extends Component {
         <Container>
           <Content>
             <List>
+              <ListItem onPress={() => this.props.navigation.pop()}>
+                <Left>
+                  <Icon name="arrow-back" />
+                </Left>
+                <Right>
+                  <Text>Back</Text>
+                </Right>
+              </ListItem>
               <ListItem itemDivider>
                 <Text>Choose Color</Text>
               </ListItem>

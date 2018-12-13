@@ -34,11 +34,35 @@ class Store extends Component {
       const id = this.props.navigation.state.params.model.id;
       const color = this.props.navigation.state.params.color;
       const data = await getData(`user/store/${id}/${color}`);
-      this.setState({ data, ready: true });
+      this.setState({ data: this._processData(data), ready: true });
     } catch (e) {
       console.log("Brand: " + e);
     }
   }
+
+  _processData = data => {
+    const processedData = [];
+
+    data.forEach((item, index) => {
+      let notFound = true;
+      for (let i = 0; i < processedData.length; i++) {
+        if (processedData[i].storeid == item.storeid) {
+          notFound = false;
+          processedData[i].count++;
+        }
+      }
+      if (notFound) {
+        processedData.push({
+          storeid: item.storeid,
+          storename: item.storename,
+          modelid: item.modelid,
+          color: item.color,
+          count: 1
+        });
+      }
+    });
+    return processedData;
+  };
 
   modelDetails = () => {
     const model = this.props.navigation.state.params.model;
@@ -71,7 +95,7 @@ class Store extends Component {
           }
         >
           <Left>
-            <Text>{item.storename}</Text>
+            <Text>{item.storename} - {item.count}</Text>
           </Left>
           <Right>
             <Icon name="arrow-forward" />
@@ -88,6 +112,14 @@ class Store extends Component {
           <Content>
             {this.modelDetails()}
             <List>
+              <ListItem onPress={() => this.props.navigation.pop()}>
+                <Left>
+                  <Icon name="arrow-back" />
+                </Left>
+                <Right>
+                  <Text>Back</Text>
+                </Right>
+              </ListItem>
               <ListItem itemDivider>
                 <Text>Choose Store</Text>
               </ListItem>
