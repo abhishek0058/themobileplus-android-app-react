@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import { getData } from "../FetchService";
 import { List, ListItem, Left, Right, Icon, Spinner, Container, Content, Card, CardItem, Item, Body } from "native-base";
 import Demand from "./Demand";
+import { getFromAsync } from "../AsyncService";
 class Store extends Component {
   static navigationOptions = {
     header: null
@@ -18,10 +19,15 @@ class Store extends Component {
 
   async componentDidMount() {
     try {
+      const store = await getFromAsync("store");
+      if(!store) {
+        alert("Restart app again");
+        return null;
+      }
       const id = this.props.navigation.state.params.model.id;
       const color = this.props.navigation.state.params.color;
-      const data = await getData(`user/store/${id}/${color}`);
-      this.setState({ data: this._processData(data), ready: true });
+      const data = await getData(`user/store/${id}/${color}/${store.id}`);
+      this.setState({ data, ready: true });
     } catch (e) {
       console.log("Brand: " + e);
     }

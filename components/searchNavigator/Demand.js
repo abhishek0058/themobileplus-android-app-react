@@ -17,6 +17,7 @@ export default class Demand extends React.Component {
     }
 
     async componentWillMount() {
+        console.log('props', this.props);
         try {
             console.log("componentDidMount");
             const store = await getFromAsync("store");
@@ -75,9 +76,12 @@ export default class Demand extends React.Component {
                             (<Text style={{ color: 'white', fontSize: 17, textAlign: 'center' }}>Submit</Text>)
                         }
                     </Button>
-                    <Button warning style={{ padding: 10, marginLeft: 50 }} onPress={this.props.closeDemandPanel}>
+                    {
+                        this.props.closeDemandPanel ?
+                        (<Button warning style={{ padding: 10, marginLeft: 50 }} onPress={this.props.closeDemandPanel}>
                         <Text style={{ color: 'white', fontSize: 17, textAlign: 'center' }}>Close</Text>
-                    </Button>
+                    </Button>) : null
+                    }
                 </View>
                 <Text style={{ padding: 10, fontSize: 17, alignSelf: 'center', color: 'red' }}>{errorMsg}</Text>
                 <Text style={{ padding: 10, fontSize: 17, alignSelf: 'center', color: 'green' }}>{successMsg}</Text>
@@ -88,16 +92,24 @@ export default class Demand extends React.Component {
     _handleSubmit = async () => {
         try {
             this.setState({ loading: true, errorMsg: '', successMsg: '' })
+
             const { qty, note, current_store_id, toOffice } = this.state;
             const { receiver_store_id, modelid, color } = this.props;
+
             console.log(isNaN(qty), parseInt(qty))
+
             if(qty.length == 0 || parseInt(qty) < 1) {
                 this.setState({ errorMsg: 'Quantity is not valid' });
-            } else if(note.length > 99) {
+            } 
+            else if(note.length > 99) {
                 this.setState({ errorMsg: 'Note can be 100 character long only' });
-            } else if(!current_store_id || !modelid || !color) {
+            } 
+            
+            else if(!current_store_id || !modelid || !color) {
                 this.setState({ errorMsg: 'Unexpected error occurred. Please try again'})
-            } else {
+            } 
+            
+            else {
                 const result = await postData("user/demand", {
                     qty, note, current_store_id, receiver_store_id: (toOffice ? 7 : receiver_store_id), modelid, color
                 });
