@@ -1,16 +1,8 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { getData } from "../FetchService";
-import {
-  List,
-  ListItem,
-  Left,
-  Right,
-  Icon,
-  Spinner,
-  Container,
-  Content
-} from "native-base";
+import { List, ListItem, Left, Right, Icon, Spinner, Container, Content } from "native-base";
+import { getFromAsync } from "../AsyncService";
 
 class Model extends Component {
   static navigationOptions = {
@@ -28,8 +20,13 @@ class Model extends Component {
   async componentDidMount() {
     try {
       console.log("componentDidMount");
+      const store = await getFromAsync("store");
+      if(!store) {
+        alert("Restart app again");
+        return null;
+      }
       const id = this.props.navigation.state.params.brandid;
-      const data = await getData(`user/model/${id}`);
+      const data = await getData(`user/model/${id}/${store.id}`);
       this.setState({ data, ready: true });
     } catch (e) {
       console.log("Model " + e);
@@ -41,6 +38,12 @@ class Model extends Component {
       return null;
     }
     return this.state.data.map((item, index) => {
+      const isAvailable = item.count ? true : false;
+      let color = 'grey', fontWeight = "normal";
+      if(isAvailable) {
+        color = 'green';
+        fontWeight = "bold";
+      }
       return (
         <ListItem
           key={index}
@@ -52,7 +55,10 @@ class Model extends Component {
             <Text>{item.name}</Text>
           </Left>
           <Right>
-            <Icon name="arrow-forward" />
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Text style={{ marginRight: 10, fontWeight: fontWeight, color: color }}>{item.count}</Text>
+              <Icon name="arrow-forward" />
+            </View>
           </Right>
         </ListItem>
       );

@@ -1,21 +1,8 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { getData } from "../FetchService";
-import {
-  List,
-  ListItem,
-  Left,
-  Right,
-  Icon,
-  Spinner,
-  Container,
-  Content,
-  Card,
-  CardItem,
-  Item,
-  Body
-} from "native-base";
-
+import { List, ListItem, Left, Right, Icon, Spinner, Container, Content, Card, CardItem, Item, Body } from "native-base";
+import Demand from "./Demand";
 class Store extends Component {
   static navigationOptions = {
     header: null
@@ -81,7 +68,26 @@ class Store extends Component {
   };
 
   makeList = () => {
+
+    if(this.state.data.length == 0) {
+      const modelid = this.props.navigation.state.params.model.id;
+      const color = this.props.navigation.state.params.color;
+      return (
+        <Demand 
+          modelid={modelid}
+          color={color}
+          receiver_store_id={0}
+          closeDemandPanel={null}
+        />)
+    }
+
     return this.state.data.map((item, index) => {
+      const isAvailable = item.count ? true : false;
+      let color = 'grey', fontWeight = "normal";
+      if(isAvailable) {
+        color = 'green';
+        fontWeight = "bold";
+      }
       return (
         <ListItem
           key={index}
@@ -95,10 +101,13 @@ class Store extends Component {
           }
         >
           <Left>
-            <Text>{item.storename} - {item.count}</Text>
+            <Text>{item.storename}</Text>
           </Left>
           <Right>
-            <Icon name="arrow-forward" />
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <Text style={{ marginRight: 10, fontWeight: fontWeight, color: color }}>{item.count}</Text>
+              <Icon name="arrow-forward" />
+            </View>
           </Right>
         </ListItem>
       );

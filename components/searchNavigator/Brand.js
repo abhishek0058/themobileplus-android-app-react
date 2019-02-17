@@ -1,17 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { getData } from "../FetchService";
-import {
-  List,
-  ListItem,
-  Left,
-  Right,
-  Icon,
-  Spinner,
-  Container,
-  Content
-} from "native-base";
-
+import { List, ListItem, Left, Right, Icon, Spinner, Container, Content } from "native-base";
 class Brand extends Component {
   static navigationOptions = {
     header: null
@@ -28,6 +18,10 @@ class Brand extends Component {
   async componentDidMount() {
     try {
       const data = await getData("user/brands");
+      if(!data) {
+        this.setState({ data: [] });
+        alert('cannot reach server');
+      }
       this.setState({ data, ready: true });
     } catch (e) {
       console.log("Brand: " + e);
