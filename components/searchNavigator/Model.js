@@ -38,6 +38,8 @@ class Model extends Component {
       return null;
     }
     return this.state.data.map((item, index) => {
+      if(item.count == 0) 
+        return null;
       const isAvailable = item.count ? true : false;
       let color = 'grey', fontWeight = "normal";
       if(isAvailable) {
