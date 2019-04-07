@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { getData } from "../FetchService";
 import { List, ListItem, Left, Right, Icon, Spinner, Container, Content } from "native-base";
-class Brand extends Component {
+
+class Categories extends Component {
   static navigationOptions = {
     header: null
   };
@@ -17,15 +18,14 @@ class Brand extends Component {
 
   async componentDidMount() {
     try {
-      const categoryid = this.props.navigation.state.params.categoryid;
-      const data = await getData(`user/brands/${categoryid}`);
+      const data = await getData("user/categories");
       if(!data) {
         this.setState({ data: [] });
         alert('cannot reach server');
       }
       this.setState({ data, ready: true });
     } catch (e) {
-      console.log("Brand: " + e);
+      console.log("Categories: " + e);
     }
   }
 
@@ -35,7 +35,7 @@ class Brand extends Component {
         <ListItem
           key={index}
           onPress={() =>
-            this.props.navigation.navigate("model", { brandid: item.id })
+            this.props.navigation.navigate("brand", { categoryid: item.id })
           }
         >
           <Left>
@@ -56,7 +56,7 @@ class Brand extends Component {
           <Content>
             <List>
               <ListItem itemDivider>
-                <Text>Choose Brand</Text>
+                <Text>Choose Category</Text>
               </ListItem>
               {this.makeList()}
             </List>
@@ -75,4 +75,4 @@ class Brand extends Component {
     }
   }
 }
-export default Brand;
+export default Categories;
