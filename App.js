@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation";
 import Login from "./components/Login";
 import TabBar from "./components/TabBar"
 import { removeFromAsync } from './components/AsyncService';
+import { getData } from './components/FetchService';
 
 const Root = createStackNavigator(
   {
@@ -15,7 +16,9 @@ export default class App extends React.Component {
 
   logout = async (props) => {
     try {
-      const result = await removeFromAsync('store');
+      await getData("user/logout");
+      await removeFromAsync("store");
+      await removeFromAsync("token");
       props.replace('Login');
     } catch (e) {
       console.log(e)

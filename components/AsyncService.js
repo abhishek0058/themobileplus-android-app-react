@@ -4,6 +4,7 @@ const getFromAsync = async key => {
   try {
     if (!key) return false;
     const result = await AsyncStorage.getItem(key);
+    if(typeof result == 'string') return result;
     return result ? JSON.parse(result) : false;
   } catch (e) {
     console.log("Async Service get", e);

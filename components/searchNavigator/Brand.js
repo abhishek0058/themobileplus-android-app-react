@@ -21,9 +21,11 @@ class Brand extends Component {
       const data = await getData(`user/brands/${categoryid}`);
       if(!data) {
         this.setState({ data: [] });
-        alert('cannot reach server');
+        // alert('cannot reach server');
       }
-      this.setState({ data, ready: true });
+      else {
+        this.setState({ data, ready: true });
+      }
     } catch (e) {
       console.log("Brand: " + e);
     }

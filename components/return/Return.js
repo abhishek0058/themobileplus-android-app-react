@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { getData, postData } from "../FetchService";
-import {
-  Container,
-  Content,
-  Spinner,
-  Form,
-  Item,
-  Label,
-  Input,
-  Button,
-  Textarea
+import { Container, Content, Spinner, Form, Item, Label, Input, Button, Textarea
 } from "native-base";
 import BarCode from "../barcode/BarCode";
 

@@ -67,10 +67,12 @@ class Login extends Component {
         },
         body: JSON.stringify({ username, password })
       });
-      const result = await response.json();
+      const { result, token } = await response.json();
       //console.log('Login result', JSON.stringify(result[0]))
       if (result.length) {
+        console.log("token", token);
         await AsyncStorage.setItem("store", JSON.stringify(result[0]));
+        await AsyncStorage.setItem("token", token);
         this.setState({ loading: false });
         this.props.navigation.replace("TabBar", { store: result[0] });
       } else {

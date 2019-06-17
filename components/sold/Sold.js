@@ -1,20 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { getData, postData } from "../FetchService";
-import {
-  Container,
-  Content,
-  Spinner,
-  Form,
-  Item,
-  Label,
-  Input,
-  Button,
-  List,
-  ListItem,
-  Left,
-  Right,
-  Icon
+import { Container, Content, Spinner, Form, Item, Label, Input, Button, List, ListItem, Left, Right, Icon
 } from "native-base";
 
 class Sold extends Component {

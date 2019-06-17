@@ -21,9 +21,11 @@ class Categories extends Component {
       const data = await getData("user/categories");
       if(!data) {
         this.setState({ data: [] });
-        alert('cannot reach server');
+        // alert('cannot reach server');
       }
-      this.setState({ data, ready: true });
+      else {
+        this.setState({ data, ready: true });
+      }
     } catch (e) {
       console.log("Categories: " + e);
     }

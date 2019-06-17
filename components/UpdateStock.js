@@ -1,15 +1,7 @@
 import React, { Component } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { getData, postData } from "./FetchService";
-import {
-  Container,
-  Content,
-  Spinner,
-  Form,
-  Item,
-  Label,
-  Input,
-  Button
+import { Container, Content, Spinner, Form, Item, Label, Input, Button
 } from "native-base";
 import PickerHelper from "./PickerHelper";
 import BarCode from "./barcode/BarCode";
