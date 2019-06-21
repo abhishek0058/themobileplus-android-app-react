@@ -1,6 +1,5 @@
 import BaseURL from './BaseURL';
 import { getFromAsync, removeFromAsync } from './AsyncService';
-import RNRestart from 'react-native-restart';
 
 console.log('BaseURL', BaseURL);
 
